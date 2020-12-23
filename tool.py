@@ -15,7 +15,7 @@ class html_list(object):
     def __iter__(self):
         return self
     
-    def __next_(self):
+    def __next__(self):
         return self.next()
 
     def next(self):
@@ -39,7 +39,7 @@ def overwrite_file(file_name, element, num_elem):
     """
     with open(file_name, "r+") as f:
         raw_data = f.read()
-        file_soup = bs4.BeautifulSoup(raw_data)
+        file_soup = bs4.BeautifulSoup(raw_data, features="html.parser")
         elem_foud = file_soup.find_all(element)[:num_elem]
         f.seek(0)
         f.write(str(elem_foud))
@@ -52,7 +52,7 @@ def main():
 
         Most likely desired is `` python tool.py . 'table' 1 ``
     """
-    for file_name in html_list(sys.argv[1])
-        overwrite_file(file_name, sys.argv[2], sys.argv[3])
+    for file_name in html_list(sys.argv[1]):
+        overwrite_file(file_name, sys.argv[2], int(sys.argv[3]))
 
 main()

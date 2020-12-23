@@ -26,10 +26,11 @@ def overwrite_file(file_name, element):
     with open(file_name, "r+") as f:
         raw_data = f.read()
         file_soup = bs4.BeautifulSoup(raw_data, features="html.parser")
-        elem_found = file_soup.find_all(element)[0]
-        f.seek(0)
-        f.write(str(elem_found))
-        f.truncate()
+        elem_found = file_soup.find_all(element)
+        if elem_found:
+            f.seek(0)
+            f.write(str(elem_found[0]))
+            f.truncate()
 
 
 def main():
@@ -38,7 +39,10 @@ def main():
 
         Most likely desired is `` python tool.py . 'table' 1 ``
     """
-    for file_name in html_list(sys.argv[1]):
-        overwrite_file(file_name, sys.argv[2])
+    directory_path = sys.argv[1]
+    element_type = sys.argv[2]
+    for file_name in html_list(directory_path):
+        rel_path = os.path.join(directory_path, file_name)
+        overwrite_file(rel_path, element_type)
 
 main()
